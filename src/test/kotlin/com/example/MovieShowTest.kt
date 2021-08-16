@@ -3,46 +3,53 @@ package com.example
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
+import java.util.*
+
 
 class MovieShowTest : StringSpec({
 
     "Book few tickets for a Movie Show"{
-        val eveningShow = MovieShow("London", ShowTime.EVENING)
+        val movieShow = MovieShow()
 
-        eveningShow.bookTicket().ticketNumber shouldBe 1
-        eveningShow.bookTicket().ticketNumber shouldBe 2
-        eveningShow.bookTicket().ticketNumber shouldBe 3
-        eveningShow.bookTicket().ticketNumber shouldBe 4
-        eveningShow.bookTicket().ticketNumber shouldBe 5
-        eveningShow.bookTicket().ticketNumber shouldBe 6
+        val movieShowTime = MovieShowTime(ShowTime.EVENING, Date(2021, 8, 17))
+
+        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 1
+        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 2
+        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 3
+        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 4
+        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 5
+        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 6
     }
 
     "Book 100 tickets for a show and check if error occurs"{
-        val afternoonShow = MovieShow("London", ShowTime.AFTERNOON)
+        val movieShow = MovieShow()
+
+        val movieShowTime = MovieShowTime(ShowTime.AFTERNOON, Date(2021, 8, 17))
 
         for (i in 1..99) {
-            afternoonShow.bookTicket()
+            movieShow.bookTicket(movieShowTime)
         }
 
-        afternoonShow.bookTicket().ticketNumber shouldBe 100
+        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 100
 
         val exception = shouldThrow<IllegalStateException> {
-            afternoonShow.bookTicket()
+            movieShow.bookTicket(movieShowTime)
         }
         exception.message shouldBe "All tickets booked for this show."
 
     }
 
-    "Book tickets for different movies"{
-        val morningShow = MovieShow("Delhi", ShowTime.MORNING)
-        val nightShow = MovieShow("London", ShowTime.NIGHT)
+    "Book tickets for different Movie Shows"{
+        val movieShow = MovieShow()
 
-        morningShow.bookTicket().ticketNumber shouldBe 1
-        morningShow.bookTicket().ticketNumber shouldBe 2
+        val movieShowTime1 = MovieShowTime(ShowTime.MORNING, Date(2021, 8, 17))
+        val movieShowTime2 = MovieShowTime(ShowTime.NIGHT, Date(2021, 8, 18))
 
-        nightShow.bookTicket().ticketNumber shouldBe 1
-        nightShow.bookTicket().ticketNumber shouldBe 2
-        nightShow.bookTicket().ticketNumber shouldBe 3
+        movieShow.bookTicket(movieShowTime1).ticketNumber shouldBe 1
+        movieShow.bookTicket(movieShowTime1).ticketNumber shouldBe 2
 
+        movieShow.bookTicket(movieShowTime2).ticketNumber shouldBe 1
+        movieShow.bookTicket(movieShowTime2).ticketNumber shouldBe 2
+        movieShow.bookTicket(movieShowTime2).ticketNumber shouldBe 3
     }
 })
