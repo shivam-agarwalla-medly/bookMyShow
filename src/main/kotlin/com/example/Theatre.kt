@@ -14,7 +14,7 @@ class Theatre(private val listOfMovieShows: List<MovieShow>) {
 
         val ticket = Ticket(movieShow.totalSeats, movieShowTime)
 
-        val copyOfListOfMovieShows = cloneMovieShowList(movieShow, movieShowTime)
+        val copyOfListOfMovieShows = updateMovieShowList(movieShow, movieShowTime)
 
         val newTheatreState = Theatre(copyOfListOfMovieShows)
         return Pair(newTheatreState, ticket)
@@ -30,7 +30,7 @@ class Theatre(private val listOfMovieShows: List<MovieShow>) {
             throw error("Cannot book tickets of shows beyond 7 days.")
     }
 
-    private fun cloneMovieShowList(movieShow: MovieShow, movieShowTime: MovieShowTime): List<MovieShow> {
+    private fun updateMovieShowList(movieShow: MovieShow, movieShowTime: MovieShowTime): List<MovieShow> {
         val copyOfListOfMovieShows = listOfMovieShows.toMutableList()
 
         copyOfListOfMovieShows.remove(movieShow)
