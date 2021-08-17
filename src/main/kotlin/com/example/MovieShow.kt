@@ -1,10 +1,6 @@
 package com.example
 
-class MovieShow {
-
-    companion object {
-        private const val TOTAL_SEATS = 100
-    }
+class MovieShow(private val totalSeats: Int) {
 
     private val ticketMap: HashMap<MovieShowTime, Int> = hashMapOf()
 
@@ -15,8 +11,8 @@ class MovieShow {
 
         val ticketNumber = ticketMap[movieShowTime]!!
 
-        if (ticketNumber == TOTAL_SEATS)
-            return error("All tickets booked for this show.")
+        if (ticketNumber == totalSeats)
+            throw error("All tickets booked for this show.")
 
         val ticket = Ticket(ticketNumber + 1, movieShowTime)
 

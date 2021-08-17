@@ -9,28 +9,20 @@ import java.util.*
 class MovieShowTest : StringSpec({
 
     "Book few tickets for a Movie Show"{
-        val movieShow = MovieShow()
+        val movieShow = MovieShow(100)
 
         val movieShowTime = MovieShowTime(ShowTime.EVENING, Date(2021, 8, 17))
 
         movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 1
         movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 2
-        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 3
-        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 4
-        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 5
-        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 6
     }
 
-    "Book 100 tickets for a show and check if error occurs"{
-        val movieShow = MovieShow()
+    "Book invalid number of tickets for a show and check if error occurs"{
+        val movieShow = MovieShow(1)
 
         val movieShowTime = MovieShowTime(ShowTime.AFTERNOON, Date(2021, 8, 17))
 
-        for (i in 1..99) {
-            movieShow.bookTicket(movieShowTime)
-        }
-
-        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 100
+        movieShow.bookTicket(movieShowTime).ticketNumber shouldBe 1
 
         val exception = shouldThrow<IllegalStateException> {
             movieShow.bookTicket(movieShowTime)
@@ -40,7 +32,7 @@ class MovieShowTest : StringSpec({
     }
 
     "Book tickets for different Movie Shows"{
-        val movieShow = MovieShow()
+        val movieShow = MovieShow(100)
 
         val movieShowTime1 = MovieShowTime(ShowTime.MORNING, Date(2021, 8, 17))
         val movieShowTime2 = MovieShowTime(ShowTime.NIGHT, Date(2021, 8, 18))
@@ -49,7 +41,5 @@ class MovieShowTest : StringSpec({
         movieShow.bookTicket(movieShowTime1).ticketNumber shouldBe 2
 
         movieShow.bookTicket(movieShowTime2).ticketNumber shouldBe 1
-        movieShow.bookTicket(movieShowTime2).ticketNumber shouldBe 2
-        movieShow.bookTicket(movieShowTime2).ticketNumber shouldBe 3
     }
 })
