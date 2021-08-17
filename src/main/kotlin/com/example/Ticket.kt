@@ -1,3 +1,3 @@
 package com.example
 
-data class Ticket(val ticketNumber: Int, val movieShowTime: MovieShowTime)
+data class Ticket(val ticketNumber: Int, val timeStamp: TimeStamp)
