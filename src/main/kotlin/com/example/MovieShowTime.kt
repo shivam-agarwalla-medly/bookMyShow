@@ -1,5 +1,5 @@
 package com.example
 
-import java.util.*
+import java.time.LocalDate
 
-data class MovieShowTime(val showTime: ShowTime, val date: Date)
+data class MovieShowTime(val showTime: ShowTime, val date: LocalDate)

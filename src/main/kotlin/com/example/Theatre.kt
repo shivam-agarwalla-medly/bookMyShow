@@ -1,26 +1,44 @@
 package com.example
 
-class Theatre(private val setOfMovieShows: MutableList<MovieShow>) {
+import java.time.LocalDate
+
+class Theatre(private val listOfMovieShows: List<MovieShow>) {
 
     fun bookTicket(movieShowTime: MovieShowTime): Pair<Theatre, Ticket> {
 
-        val movieShow = setOfMovieShows.find { it.movieShowTime == movieShowTime }!!
+        validateDate(movieShowTime)
 
-        if (movieShow.totalSeats == 0)
-            throw error("All tickets booked for this show.")
+        val movieShow = listOfMovieShows.find { it.movieShowTime == movieShowTime }!!
+
+        validateRemainingSeats(movieShow)
 
         val ticket = Ticket(movieShow.totalSeats, movieShowTime)
 
-        setOfMovieShows.remove(movieShow)
-        setOfMovieShows.add(MovieShow(movieShowTime, movieShow.totalSeats - 1))
+        val copyOfListOfMovieShows = cloneMovieShowList(movieShow, movieShowTime)
 
-        val newTheatreState = Theatre(setOfMovieShows)
+        val newTheatreState = Theatre(copyOfListOfMovieShows)
         return Pair(newTheatreState, ticket)
     }
 
-    fun ticketsToBeBooked(movieShowTime: MovieShowTime): Int {
-        val movieShow = setOfMovieShows.find { it.movieShowTime == movieShowTime }!!
-
-        return movieShow.totalSeats
+    private fun validateRemainingSeats(movieShow: MovieShow) {
+        if (movieShow.totalSeats == 0)
+            throw error("All tickets booked for this show.")
     }
+
+    private fun validateDate(movieShowTime: MovieShowTime) {
+        if (movieShowTime.date > LocalDate.now().plusDays(7))
+            throw error("Cannot book tickets of shows beyond 7 days.")
+    }
+
+    private fun cloneMovieShowList(movieShow: MovieShow, movieShowTime: MovieShowTime): List<MovieShow> {
+        val copyOfListOfMovieShows = listOfMovieShows.toMutableList()
+
+        copyOfListOfMovieShows.remove(movieShow)
+        copyOfListOfMovieShows.add(MovieShow(movieShowTime, movieShow.totalSeats - 1))
+
+        return copyOfListOfMovieShows.toList()
+    }
+
+    fun getNumberOfTicketsAvailable(movieShowTime: MovieShowTime) =
+        listOfMovieShows.find { it.movieShowTime == movieShowTime }!!.totalSeats
 }
